@@ -53,9 +53,34 @@ jobs:
       - name: Extract project
         run: unzip -q SelectCopyAndroid_phone_build_fixed-1.zip
 
+      
       - name: Align Java target
         run: |
-          sed -i 's/VERSION_1_8/VERSION_17/g' SelectCopyAndroid/app/build.gradle
+          python3 - <<'PY'
+          from pathlib import Path
+
+          p = Path("SelectCopyAndroid/app/build.gradle")
+          s = p.read_text()
+
+          pos = s.rfind("}")
+          if pos < 0:
+              raise SystemExit("Android block not found")
+
+          settings = """
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+
+              kotlinOptions {
+                  jvmTarget = '17'
+              }
+          """
+
+          s = s[:pos] + settings + s[pos:]
+          p.write_text(s)
+          PY
+
           
       - name: Build APK
         working-directory: SelectCopyAndroid
