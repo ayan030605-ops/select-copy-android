@@ -53,6 +53,10 @@ jobs:
       - name: Extract project
         run: unzip -q SelectCopyAndroid_phone_build_fixed-1.zip
 
+      - name: Align Java target
+        run: |
+          sed -i 's/VERSION_1_8/VERSION_17/g' SelectCopyAndroid/app/build.gradle
+          
       - name: Build APK
         working-directory: SelectCopyAndroid
         run: gradle :app:assembleDebug
