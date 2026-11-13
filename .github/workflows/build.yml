@@ -51,7 +51,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Extract project
-        run: unzip -q SelectCopyAndroid_FreeWebNovel_v1_6.zip
+        run: unzip -q SelectCopyAndroid_v1_7_install.zip 
 
       
       - name: Align Java target
